@@ -45,6 +45,14 @@
           Gestión de Pedidos
         </button>
       </nav>
+      <div class="theme-toggle-container">
+        <button id="theme-toggle" class="theme-toggle-btn" onclick="app.toggleTheme()" title="Cambiar tema">
+          <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span id="theme-label">Modo Oscuro</span>
+        </button>
+      </div>
       <div class="sidebar-footer">
         <p id="geo-location" class="location-text">Obteniendo ubicación...</p>
       </div>
@@ -127,6 +135,13 @@
           </button>
         </header>
 
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-orders" placeholder="Buscar por cliente, producto o estado..." oninput="crud.searchOrders(this.value)">
+        </div>
         <div class="table-container glass-panel">
           <table class="orders-table">
             <thead>
