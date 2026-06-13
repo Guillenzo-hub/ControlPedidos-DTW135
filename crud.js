@@ -3,6 +3,9 @@ const crud = {
   searchQuery: '',
 
   init() {
+    if (typeof auth !== 'undefined' && !auth.checkSession()) {
+      return;
+    }
     const stored = localStorage.getItem('orders');
     if (stored) {
       try {

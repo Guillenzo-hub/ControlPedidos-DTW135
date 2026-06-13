@@ -1,5 +1,16 @@
 const app = {
   init() {
+    // Verificar la sesión activa antes de inicializar componentes y workers
+    if (typeof auth !== 'undefined') {
+      if (!auth.checkSession()) {
+        document.body.classList.add('auth-mode');
+        auth.initUI();
+        return;
+      }
+      document.body.classList.remove('auth-mode');
+      auth.updateSidebarUser();
+    }
+
     const activeTab = sessionStorage.getItem('activeTab') || 'dashboard';
     this.switchTab(activeTab);
 
