@@ -2,6 +2,9 @@ const api = {
   products: [],
 
   async init() {
+    if (typeof auth !== 'undefined' && !auth.checkSession()) {
+      return;
+    }
     this.getGeolocation();
     await this.fetchProducts();
   },

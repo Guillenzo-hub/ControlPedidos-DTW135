@@ -1,7 +1,11 @@
 const crud = {
   orders: [],
+  searchQuery: '',
 
   init() {
+    if (typeof auth !== 'undefined' && !auth.checkSession()) {
+      return;
+    }
     const stored = localStorage.getItem('orders');
     if (stored) {
       try {
@@ -12,6 +16,22 @@ const crud = {
       }
     }
 
+    this.render();
+  },
+
+  getFilteredOrders() {
+    if (!this.searchQuery.trim()) return this.orders;
+
+    const q = this.searchQuery.toLowerCase().trim();
+    return this.orders.filter(order =>
+      order.customer.toLowerCase().includes(q) ||
+      order.productTitle.toLowerCase().includes(q) ||
+      order.status.toLowerCase().includes(q)
+    );
+  },
+
+  searchOrders(query) {
+    this.searchQuery = query;
     this.render();
   },
 
@@ -35,14 +55,21 @@ const crud = {
 
     tbody.innerHTML = '';
 
-    if (this.orders.length === 0) {
+    const filtered = this.getFilteredOrders();
+
+    if (filtered.length === 0) {
       emptyState.style.display = 'block';
-      tbody.parentElement.style.display = 'none';
+      if (tbody.parentElement) tbody.parentElement.style.display = 'none';
+      if (this.orders.length > 0) {
+        emptyState.querySelector('p').textContent = 'No hay pedidos que coincidan con tu búsqueda.';
+      } else {
+        emptyState.querySelector('p').textContent = 'No hay pedidos registrados aún.';
+      }
     } else {
       emptyState.style.display = 'none';
-      tbody.parentElement.style.display = 'table';
+      if (tbody.parentElement) tbody.parentElement.style.display = 'table';
 
-      this.orders.forEach(order => {
+      filtered.forEach(order => {
         const tr = document.createElement('tr');
 
         let badgeClass = 'status-pendiente';
